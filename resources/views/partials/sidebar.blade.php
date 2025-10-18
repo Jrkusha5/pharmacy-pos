@@ -126,15 +126,7 @@
                 </li>
                 @endcan
 
-                <!-- Payment Management -->
-                @can('purchase_payment_manage')
-                <li class="nav-item">
-                    <a href="{{ route('purchases.index') }}?payment_status=pending">
-                        <i class="fas fa-credit-card"></i>
-                        <p>Payment Management</p>
-                    </a>
-                </li>
-                @endcan
+               
 
                 <!-- Export Purchases -->
                 @can('purchase_export')
@@ -172,15 +164,6 @@
                 </li>
                 @endcan
 
-                <!-- POS / Cart -->
-                @canany(['cart_view', 'cart_management'])
-                <li class="nav-item">
-                    <a href="{{ route('cart.index') }}">
-                        <i class="fas fa-shopping-cart"></i>
-                        <p>Point of Sale (POS)</p>
-                    </a>
-                </li>
-                @endcanany
 
                 <!-- Reports Section -->
                 <li class="nav-section">
