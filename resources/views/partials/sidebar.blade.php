@@ -117,26 +117,26 @@
                 @endcan
 
                 <!-- Batch Management -->
-                @can('purchase_batch_manage')
+                {{-- @can('purchase_batch_manage')
                 <li class="nav-item">
                     <a href="{{ route('purchases.batch-report') }}">
                         <i class="fas fa-boxes"></i>
                         <p>Batch Management</p>
                     </a>
                 </li>
-                @endcan
+                @endcan --}}
 
-               
+
 
                 <!-- Export Purchases -->
-                @can('purchase_export')
+                {{-- @can('purchase_export')
                 <li class="nav-item">
                     <a href="{{ route('purchases.export') }}">
                         <i class="fas fa-file-export"></i>
                         <p>Export Purchases</p>
                     </a>
                 </li>
-                @endcan
+                @endcan --}}
 
                 <!-- Sales Section -->
                 <li class="nav-section">
