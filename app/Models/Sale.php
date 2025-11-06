@@ -3,17 +3,23 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use App\Traits\HasRoleBasedAccess;
 
 class Sale extends Model
 {
+    use HasRoleBasedAccess;
+
     protected $fillable = [
-        'reference_no', 'sold_at', 'status', 'subtotal', 'total', 'note'
+        'reference_no', 'customer_id', 'sold_at', 'status', 'payment_status',
+        'subtotal', 'total', 'total_amount', 'note', 'created_by'
     ];
 
     protected $casts = [
         'sold_at' => 'datetime',
         'subtotal' => 'decimal:4',
-        'total' => 'decimal:4'
+        'total' => 'decimal:4',
+        'total_amount' => 'decimal:4'
     ];
 
     protected static function boot()
@@ -28,10 +34,30 @@ class Sale extends Model
             if (empty($sale->sold_at)) {
                 $sale->sold_at = now();
             }
+
+            // Automatically set created_by if not set
+            if (empty($sale->created_by) && auth()->check()) {
+                $sale->created_by = auth()->id();
+            }
         });
     }
 
+    public function customer(): BelongsTo
+    {
+        return $this->belongsTo(Customer::class);
+    }
+
+    public function creator(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'created_by');
+    }
+
     public function items(): HasMany
+    {
+        return $this->hasMany(SaleItem::class);
+    }
+
+    public function saleItems(): HasMany
     {
         return $this->hasMany(SaleItem::class);
     }
@@ -41,7 +67,8 @@ class Sale extends Model
         $subtotal = $this->items()->sum('line_total');
         $this->update([
             'subtotal' => $subtotal,
-            'total'    => $subtotal
+            'total'    => $subtotal,
+            'total_amount' => $subtotal
         ]);
     }
 }

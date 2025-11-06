@@ -25,7 +25,8 @@ class PurchaseController extends Controller
     
     public function index(Request $request)
     {
-        $query = Purchase::with(['supplier', 'items.item']);
+        // Apply role-based filtering: Super Admin sees all, others see only their own
+        $query = Purchase::forUser()->with(['supplier', 'items.item']);
 
         // Search functionality
         if ($request->has('search') && $request->search != '') {
@@ -146,6 +147,9 @@ class PurchaseController extends Controller
      */
     public function show(Purchase $purchase)
     {
+        // Check access: Super Admin sees all, others see only their own
+        $this->authorizeRecordAccess($purchase);
+        
         $purchase->load(['supplier', 'items.item', 'items.item.category', 'items.item.unit']);
 
         return view('purchases.show', compact('purchase'));
@@ -156,6 +160,8 @@ class PurchaseController extends Controller
      */
     public function edit(Purchase $purchase)
     {
+        // Check access: Super Admin sees all, others see only their own
+        $this->authorizeRecordAccess($purchase);
         if ($purchase->status !== 'draft') {
             return redirect()->route('purchases.show', $purchase->id)
                 ->with('error', 'Only draft purchases can be edited.');
@@ -173,6 +179,8 @@ class PurchaseController extends Controller
      */
     public function update(Request $request, Purchase $purchase)
     {
+        // Check access: Super Admin sees all, others see only their own
+        $this->authorizeRecordAccess($purchase);
         if ($purchase->status !== 'draft') {
             return redirect()->route('purchases.show', $purchase->id)
                 ->with('error', 'Only draft purchases can be edited.');
@@ -249,6 +257,8 @@ class PurchaseController extends Controller
      */
     public function destroy(Purchase $purchase)
     {
+        // Check access: Super Admin sees all, others see only their own
+        $this->authorizeRecordAccess($purchase);
         if ($purchase->status !== 'draft') {
             return redirect()->route('purchases.show', $purchase->id)
                 ->with('error', 'Only draft purchases can be deleted.');
@@ -276,6 +286,8 @@ class PurchaseController extends Controller
      */
     public function updateStatus(Request $request, Purchase $purchase)
     {
+        // Check access: Super Admin sees all, others see only their own
+        $this->authorizeRecordAccess($purchase);
         $validated = $request->validate([
             'status' => 'required|in:draft,posted,void'
         ]);

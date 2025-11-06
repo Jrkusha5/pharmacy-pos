@@ -24,8 +24,8 @@ class StockMovementController extends Controller
 
     public function index()
 {
-    // Temporarily remove 'reference' from the eager loading
-    $stockMovements = StockMovement::with(['item', 'batch'])->latest()->paginate(10);
+    // Apply role-based filtering: Super Admin sees all, others see only their own
+    $stockMovements = StockMovement::forUser()->with(['item', 'batch'])->latest()->paginate(10);
     $items = Item::active()->get();
     $batches = Batch::latest()->get();
     

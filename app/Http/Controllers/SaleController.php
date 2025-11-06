@@ -18,7 +18,8 @@ class SaleController extends Controller
      */
     public function index()
     {
-        $sales = Sale::with('items')->orderBy('sold_at', 'desc')->paginate(20);
+        // Apply role-based filtering: Super Admin sees all, others see only their own
+        $sales = Sale::forUser()->with('items')->orderBy('sold_at', 'desc')->paginate(20);
 
         return view('sales.index', compact('sales'));
     }
@@ -104,12 +105,15 @@ $items = Item::all();
      */
     public function show($id)
     {
-        $sale = Sale::with('items.item', 'items.purchaseItem')->find($id);
+        $sale = Sale::forUser()->with('items.item', 'items.purchaseItem')->find($id);
 
         if (!$sale) {
             return redirect()->route('sales.index')
                 ->with('error', 'Sale not found');
         }
+
+        // Additional authorization check
+        $this->authorizeRecordAccess($sale);
 
         return view('sales.show', compact('sale'));
     }
@@ -119,13 +123,16 @@ $items = Item::all();
      */
     public function edit($id)
     {
-        $sale = Sale::with('items.item')->find($id);
+        $sale = Sale::forUser()->with('items.item')->find($id);
         $items = Item::where('is_active', true)->get();
 
         if (!$sale) {
             return redirect()->route('sales.index')
                 ->with('error', 'Sale not found');
         }
+
+        // Additional authorization check
+        $this->authorizeRecordAccess($sale);
 
         return view('sales.edit', compact('sale', 'items'));
     }
@@ -135,12 +142,15 @@ $items = Item::all();
      */
     public function update(Request $request, $id)
     {
-        $sale = Sale::find($id);
+        $sale = Sale::forUser()->find($id);
 
         if (!$sale) {
             return redirect()->route('sales.index')
                 ->with('error', 'Sale not found');
         }
+
+        // Additional authorization check
+        $this->authorizeRecordAccess($sale);
 
         $validator = Validator::make($request->all(), [
             'sold_at' => 'sometimes|date',
@@ -239,12 +249,15 @@ $items = Item::all();
      */
     public function destroy($id)
     {
-        $sale = Sale::find($id);
+        $sale = Sale::forUser()->find($id);
 
         if (!$sale) {
             return redirect()->route('sales.index')
                 ->with('error', 'Sale not found');
         }
+
+        // Additional authorization check
+        $this->authorizeRecordAccess($sale);
 
         try {
             DB::beginTransaction();
@@ -286,5 +299,18 @@ $items = Item::all();
             'price' => $item->sell_price,
             'in_stock' => $item->in_stock
         ]);
+    }
+
+    /**
+     * Print invoice for a sale
+     */
+    public function printInvoice($id)
+    {
+        $sale = Sale::forUser()->with(['saleItems.item', 'customer'])->findOrFail($id);
+        
+        // Additional authorization check
+        $this->authorizeRecordAccess($sale);
+        
+        return view('sales.print', compact('sale'));
     }
 }

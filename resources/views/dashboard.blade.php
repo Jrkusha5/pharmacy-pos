@@ -8,8 +8,8 @@
       <h6 class="op-7 mb-2">Manage items, purchases, sales, and inventory</h6>
     </div>
     <div class="ms-md-auto py-2 py-md-0">
-      <a href="#" class="btn btn-label-info btn-round me-2">Manage Inventory</a>
-      <a href="#" class="btn btn-primary btn-round">Add New Item</a>
+      <a href="{{ route('stock_movements.index') }}" class="btn btn-label-info btn-round me-2">Manage Inventory</a>
+      <a href="{{ route('items.create') }}" class="btn btn-primary btn-round">Add New Item</a>
     </div>
   </div>
 
@@ -27,7 +27,7 @@
             <div class="col col-stats ms-3 ms-sm-0">
               <div class="numbers">
                 <p class="card-category">Total Items</p>
-                <h4 class="card-title">210</h4>
+                <h4 class="card-title">{{ number_format($totalItems) }}</h4>
               </div>
             </div>
           </div>
@@ -46,7 +46,7 @@
             <div class="col col-stats ms-3 ms-sm-0">
               <div class="numbers">
                 <p class="card-category">Purchases</p>
-                <h4 class="card-title">315</h4>
+                <h4 class="card-title">{{ number_format($totalPurchases) }}</h4>
               </div>
             </div>
           </div>
@@ -65,7 +65,7 @@
             <div class="col col-stats ms-3 ms-sm-0">
               <div class="numbers">
                 <p class="card-category">Sales</p>
-                <h4 class="card-title">Birr 12,450</h4>
+                <h4 class="card-title">Birr {{ number_format($totalSalesAmount, 2) }}</h4>
               </div>
             </div>
           </div>
@@ -84,7 +84,7 @@
             <div class="col col-stats ms-3 ms-sm-0">
               <div class="numbers">
                 <p class="card-category">Sales Returns</p>
-                <h4 class="card-title">22</h4>
+                <h4 class="card-title">{{ number_format($totalSalesReturns) }}</h4>
               </div>
             </div>
           </div>
@@ -111,21 +111,23 @@
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td>Paracetamol 500mg</td>
-                  <td>8</td>
-                  <td><span class="badge bg-warning text-dark">Low Stock</span></td>
-                </tr>
-                <tr>
-                  <td>Amoxicillin 250mg</td>
-                  <td>0</td>
-                  <td><span class="badge bg-danger">Out of Stock</span></td>
-                </tr>
-                <tr>
-                  <td>Vitamin C Tablets</td>
-                  <td>15</td>
-                  <td><span class="badge bg-success">OK</span></td>
-                </tr>
+                @forelse($lowStockItems as $stock)
+                  <tr>
+                    <td>{{ $stock->purchaseItem->item->name ?? 'N/A' }}</td>
+                    <td>{{ $stock->quantity }}</td>
+                    <td>
+                      @if($stock->quantity == 0)
+                        <span class="badge bg-danger">Out of Stock</span>
+                      @else
+                        <span class="badge bg-warning text-dark">Low Stock</span>
+                      @endif
+                    </td>
+                  </tr>
+                @empty
+                  <tr>
+                    <td colspan="3" class="text-center">No low stock items</td>
+                  </tr>
+                @endforelse
               </tbody>
             </table>
           </div>
@@ -149,21 +151,23 @@
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td>Ibuprofen 200mg</td>
-                  <td>#B1245</td>
-                  <td>Aug 2025</td>
-                </tr>
-                <tr>
-                  <td>Cough Syrup</td>
-                  <td>#B0983</td>
-                  <td>Sep 2025</td>
-                </tr>
-                <tr>
-                  <td>Multivitamin</td>
-                  <td>#C4312</td>
-                  <td>Expired</td>
-                </tr>
+                @forelse($expiredItems as $item)
+                  <tr>
+                    <td>{{ $item->item_name }}</td>
+                    <td>{{ $item->batch_number }}</td>
+                    <td>
+                      @if(\Carbon\Carbon::parse($item->expiry_date)->isPast())
+                        <span class="text-danger">Expired ({{ \Carbon\Carbon::parse($item->expiry_date)->format('M Y') }})</span>
+                      @else
+                        {{ \Carbon\Carbon::parse($item->expiry_date)->format('M Y') }}
+                      @endif
+                    </td>
+                  </tr>
+                @empty
+                  <tr>
+                    <td colspan="3" class="text-center">No expired or expiring items</td>
+                  </tr>
+                @endforelse
               </tbody>
             </table>
           </div>
@@ -201,15 +205,15 @@
           <ul class="list-group list-group-flush">
             <li class="list-group-item d-flex justify-content-between align-items-center">
               Total Sales
-              <span class="badge bg-success">$1,230</span>
+              <span class="badge bg-success">Birr {{ number_format($todaySales, 2) }}</span>
             </li>
             <li class="list-group-item d-flex justify-content-between align-items-center">
               New Purchases
-              <span class="badge bg-info">12</span>
+              <span class="badge bg-info">{{ $todayPurchases }}</span>
             </li>
             <li class="list-group-item d-flex justify-content-between align-items-center">
               Items Returned
-              <span class="badge bg-danger">3</span>
+              <span class="badge bg-danger">{{ $todayReturns }}</span>
             </li>
           </ul>
         </div>
@@ -217,4 +221,56 @@
     </div>
   </div>
 </div>
+
+@push('scripts')
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const ctx = document.getElementById('salesChart');
+    if (ctx) {
+      new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: @json($chartLabels),
+          datasets: [{
+            label: 'Sales (Birr)',
+            data: @json($chartData),
+            borderColor: 'rgb(75, 192, 192)',
+            backgroundColor: 'rgba(75, 192, 192, 0.2)',
+            tension: 0.1,
+            fill: true
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          scales: {
+            y: {
+              beginAtZero: true,
+              ticks: {
+                callback: function(value) {
+                  return 'Birr ' + value.toLocaleString();
+                }
+              }
+            }
+          },
+          plugins: {
+            legend: {
+              display: true,
+              position: 'top'
+            },
+            tooltip: {
+              callbacks: {
+                label: function(context) {
+                  return 'Sales: Birr ' + context.parsed.y.toLocaleString();
+                }
+              }
+            }
+          }
+        }
+      });
+    }
+  });
+</script>
+@endpush
 @endsection

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Item;
 use App\Models\Category;
 use App\Models\Unit;
+use App\Models\Supplier;
 use App\Models\PurchaseItem;
 use App\Models\StockMovement;
 use Illuminate\Http\Request;
@@ -51,8 +52,9 @@ class ItemController extends Controller
         $items = $query->orderBy('name')->paginate(20);
         $categories = Category::orderBy('name')->get();
         $units = Unit::orderBy('name')->get();
+        $suppliers = Supplier::orderBy('name')->get();
 
-        return view('items.index', compact('items', 'categories', 'units'));
+        return view('items.index', compact('items', 'categories', 'units', 'suppliers'));
     }
 
     /**

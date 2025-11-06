@@ -174,68 +174,30 @@
                     aria-expanded="false"
                   >
                     <i class="fa fa-bell"></i>
-                    <span class="notification">4</span>
+                    <span class="notification" id="notification-badge">0</span>
                   </a>
                   <ul
                     class="dropdown-menu notif-box animated fadeIn"
                     aria-labelledby="notifDropdown"
+                    style="width: 350px;"
                   >
                     <li>
-                      <div class="dropdown-title">
-                        You have 4 new notification
+                      <div class="dropdown-title d-flex justify-content-between align-items-center">
+                        <span>Notifications</span>
+                        <a href="#" class="small" onclick="markAllAsRead()">Mark all as read</a>
                       </div>
                     </li>
                     <li>
-                      <div class="notif-scroll scrollbar-outer">
-                        <div class="notif-center">
-                          <a href="#">
-                            <div class="notif-icon notif-primary">
-                              <i class="fa fa-user-plus"></i>
-                            </div>
-                            <div class="notif-content">
-                              <span class="block"> New user registered </span>
-                              <span class="time">5 minutes ago</span>
-                            </div>
-                          </a>
-                          <a href="#">
-                            <div class="notif-icon notif-success">
-                              <i class="fa fa-comment"></i>
-                            </div>
-                            <div class="notif-content">
-                              <span class="block">
-                                Rahmad commented on Admin
-                              </span>
-                              <span class="time">12 minutes ago</span>
-                            </div>
-                          </a>
-                          <a href="#">
-                            <div class="notif-img">
-                              <img
-                                src="assets/img/profile2.jpg"
-                                alt="Img Profile"
-                              />
-                            </div>
-                            <div class="notif-content">
-                              <span class="block">
-                                Reza send messages to you
-                              </span>
-                              <span class="time">12 minutes ago</span>
-                            </div>
-                          </a>
-                          <a href="#">
-                            <div class="notif-icon notif-danger">
-                              <i class="fa fa-heart"></i>
-                            </div>
-                            <div class="notif-content">
-                              <span class="block"> Farrah liked Admin </span>
-                              <span class="time">17 minutes ago</span>
-                            </div>
-                          </a>
+                      <div class="notif-scroll scrollbar-outer" style="max-height: 400px;">
+                        <div class="notif-center" id="notification-list">
+                          <div class="text-center p-3">
+                            <i class="fa fa-spinner fa-spin"></i> Loading...
+                          </div>
                         </div>
                       </div>
                     </li>
                     <li>
-                      <a class="see-all" href="javascript:void(0);"
+                      <a class="see-all" href="{{ route('notifications.index') }}"
                         >See all notifications<i class="fa fa-angle-right"></i>
                       </a>
                     </li>
@@ -369,7 +331,12 @@
                         <div class="dropdown-divider"></div>
                         <a class="dropdown-item" href="#">Account Setting</a>
                         <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="#">Logout</a>
+                        <form method="POST" action="{{ route('logout') }}" class="d-inline">
+                          @csrf
+                          <button type="submit" class="dropdown-item" style="border: none; background: none; width: 100%; text-align: left; padding: 0.5rem 1rem; color: inherit;">
+                            <i class="fa fa-sign-out-alt me-2"></i> Logout
+                          </button>
+                        </form>
                       </li>
                     </div>
                   </ul>

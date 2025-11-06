@@ -144,6 +144,14 @@
                     <h4 class="text-section">Sales</h4>
                 </li>
 
+                <!-- Customers -->
+                <li class="nav-item">
+                    <a href="{{ route('customers.index') }}">
+                        <i class="fas fa-user-friends"></i>
+                        <p>Customers</p>
+                    </a>
+                </li>
+
                 <!-- Sales -->
                 @can('sale_view')
                 <li class="nav-item">
@@ -171,9 +179,17 @@
                     <h4 class="text-section">Reports & Analytics</h4>
                 </li>
 
+                <!-- Reports Dashboard -->
+                <li class="nav-item">
+                    <a href="{{ route('reports.index') }}">
+                        <i class="fas fa-chart-pie"></i>
+                        <p>Reports Dashboard</p>
+                    </a>
+                </li>
+
                 <!-- Sales Reports -->
                 <li class="nav-item">
-                    <a href="#">
+                    <a href="{{ route('reports.sales') }}">
                         <i class="fas fa-chart-line"></i>
                         <p>Sales Reports</p>
                     </a>
@@ -181,9 +197,25 @@
 
                 <!-- Inventory Reports -->
                 <li class="nav-item">
-                    <a href="#">
+                    <a href="{{ route('reports.inventory') }}">
                         <i class="fas fa-box-open"></i>
                         <p>Inventory Reports</p>
+                    </a>
+                </li>
+
+                <!-- Profit & Loss -->
+                <li class="nav-item">
+                    <a href="{{ route('reports.profit-loss') }}">
+                        <i class="fas fa-dollar-sign"></i>
+                        <p>Profit & Loss</p>
+                    </a>
+                </li>
+
+                <!-- Expiry Reports -->
+                <li class="nav-item">
+                    <a href="{{ route('reports.expiry') }}">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <p>Expiry Reports</p>
                     </a>
                 </li>
 

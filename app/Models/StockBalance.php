@@ -7,16 +7,16 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class StockBalance extends Model
 {
-    protected $fillable = ['purchase_item_id', 'quantity'];
+    protected $fillable = ['purchase_item_id', 'item_id', 'quantity'];
 
     public function purchaseItem(): BelongsTo
     {
         return $this->belongsTo(PurchaseItem::class);
     }
 
-    public function item()
+    public function item(): BelongsTo
     {
-        return $this->purchaseItem->item;
+        return $this->belongsTo(Item::class);
     }
 
     public function isLowStock()

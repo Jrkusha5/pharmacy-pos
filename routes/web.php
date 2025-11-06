@@ -16,6 +16,9 @@ use App\Http\Controllers\PurchaseItemController;
 use App\Http\Controllers\SaleController;
 use App\Http\Controllers\SaleItemController;
 use App\Http\Controllers\StockMovementController;
+use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\ReportController;
+use App\Http\Controllers\NotificationController;
 
 // Authentication Routes
 Route::get('/', [AuthController::class, 'showLoginForm'])->name('login');
@@ -64,12 +67,36 @@ Route::middleware('auth')->group(function () {
 
     // Sales
     Route::resource('sales', SaleController::class);
+    Route::get('sales/{sale}/print', [SaleController::class, 'printInvoice'])->name('sales.print');
 
     // Sale Items
     Route::resource('sale-items', SaleItemController::class);
 
     // Stock Movements
     Route::resource('stock_movements', StockMovementController::class);
+
+    // Customers
+    Route::resource('customers', CustomerController::class);
+
+    // Reports
+    Route::prefix('reports')->name('reports.')->group(function () {
+        Route::get('/', [ReportController::class, 'index'])->name('index');
+        Route::get('/sales', [ReportController::class, 'sales'])->name('sales');
+        Route::get('/purchases', [ReportController::class, 'purchases'])->name('purchases');
+        Route::get('/inventory', [ReportController::class, 'inventory'])->name('inventory');
+        Route::get('/profit-loss', [ReportController::class, 'profitLoss'])->name('profit-loss');
+        Route::get('/expiry', [ReportController::class, 'expiry'])->name('expiry');
+        Route::get('/export/{type}', [ReportController::class, 'export'])->name('export');
+    });
+
+    // Notifications
+    Route::prefix('notifications')->name('notifications.')->group(function () {
+        Route::get('/', [NotificationController::class, 'index'])->name('index');
+        Route::get('/unread-count', [NotificationController::class, 'unreadCount'])->name('unread-count');
+        Route::post('/{notification}/mark-as-read', [NotificationController::class, 'markAsRead'])->name('mark-as-read');
+        Route::post('/mark-all-read', [NotificationController::class, 'markAllAsRead'])->name('mark-all-read');
+        Route::delete('/{notification}', [NotificationController::class, 'destroy'])->name('destroy');
+    });
 
     // Roles and Permissions
     Route::resource('roles', RoleController::class)->middleware('permission:role_management');

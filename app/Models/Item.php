@@ -9,15 +9,15 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class Item extends Model
 {
     protected $fillable = [
-        'name', 'category_id', 'unit_id',  'sku',
-        'default_sell_price',
-        'reorder_level', 'reorder_quantity', 'active'
+        'name', 'category_id', 'unit_id', 'sku', 'barcode',
+        'default_sell_price', 'selling_price',
+        'reorder_level', 'min_stock_level', 'reorder_quantity', 'active'
     ];
 
     protected $casts = [
-         'default_sell_price' => 'decimal:4',
+        'default_sell_price' => 'decimal:4',
+        'selling_price' => 'decimal:4',
         'active' => 'boolean',
-
     ];
 
     public function category(): BelongsTo
