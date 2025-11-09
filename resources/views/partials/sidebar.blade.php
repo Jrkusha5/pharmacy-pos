@@ -1,290 +1,244 @@
-<div class="sidebar" data-background-color="dark">
+<!-- Sidebar -->
+<div class="sidebar modern-sidebar" data-background-color="dark">
     <div class="sidebar-logo">
-        <!-- Logo Header -->
-        <div class="logo-header" data-background-color="dark">
-            <a href="{{ route('dashboard') }}" class="logo">
-                <img src="{{ asset('assets/img/kaiadmin/logo_light.svg') }}" alt="Pharmacy" class="navbar-brand" height="20" />
-                {{-- <span class="logo-text  text-white">Pharmacy POS</span> --}}
+        <div class="logo-header">
+            <a href="{{ route('dashboard') }}" class="logo d-flex align-items-center">
+                <img src="{{ asset('assets/img/kaiadmin/logo_light.svg') }}" alt="Pharmacy" height="26" />
+                <span class="ms-2 fw-semibold text-white">Pharmacy POS</span>
             </a>
-            <div class="nav-toggle">
-                <button class="btn btn-toggle toggle-sidebar"><i class="fas fa-bars"></i></button>
-            </div>
+            <button class="btn btn-sm btn-outline-light toggle-sidebar ms-auto">
+                <i class="fas fa-bars"></i>
+            </button>
         </div>
-        <!-- End Logo Header -->
     </div>
 
     <div class="sidebar-wrapper scrollbar scrollbar-inner">
         <div class="sidebar-content">
-            <ul class="nav nav-secondary">
+            <ul class="nav flex-column nav-secondary">
+
                 <!-- Dashboard -->
                 <li class="nav-item active">
-                    <a href="{{ route('dashboard') }}">
+                    <a href="{{ route('dashboard') }}" class="nav-link">
                         <i class="fas fa-home"></i>
-                        <p>Dashboard</p>
+                        <span>Dashboard</span>
                     </a>
                 </li>
 
                 <!-- Inventory Management Section -->
                 <li class="nav-section">
-                    <span class="sidebar-mini-icon"><i class="fas fa-warehouse"></i></span>
-                    <h4 class="text-section">Inventory Management</h4>
+                    <h6 class="text-uppercase text-muted mt-3 mb-2">Inventory Management</h6>
                 </li>
 
-                <!-- Items -->
                 @can('item_view')
                 <li class="nav-item">
-                    <a href="{{ route('items.index') }}">
+                    <a href="{{ route('items.index') }}" class="nav-link">
                         <i class="fas fa-pills"></i>
-                        <p>Items / Medicines</p>
+                        <span>Items / Medicines</span>
                     </a>
                 </li>
                 @endcan
 
-                <!-- Categories -->
                 @can('category_view')
                 <li class="nav-item">
-                    <a href="{{ route('categories.index') }}">
+                    <a href="{{ route('categories.index') }}" class="nav-link">
                         <i class="fas fa-tags"></i>
-                        <p>Categories</p>
+                        <span>Categories</span>
                     </a>
                 </li>
                 @endcan
 
-                <!-- Units -->
                 @can('unit_view')
                 <li class="nav-item">
-                    <a href="{{ route('units.index') }}">
+                    <a href="{{ route('units.index') }}" class="nav-link">
                         <i class="fas fa-ruler-combined"></i>
-                        <p>Units</p>
+                        <span>Units</span>
                     </a>
                 </li>
                 @endcan
 
-                <!-- Suppliers -->
                 @can('supplier_view')
                 <li class="nav-item">
-                    <a href="{{ route('suppliers.index') }}">
+                    <a href="{{ route('suppliers.index') }}" class="nav-link">
                         <i class="fas fa-truck"></i>
-                        <p>Suppliers</p>
+                        <span>Suppliers</span>
                     </a>
                 </li>
                 @endcan
 
-                <!-- Stock Management -->
                 @can('stock_movement_view')
                 <li class="nav-item">
-                    <a href="{{ route('stock_movements.index') }}">
+                    <a href="{{ route('stock_movements.index') }}" class="nav-link">
                         <i class="fas fa-exchange-alt"></i>
-                        <p>Stock Movements</p>
+                        <span>Stock Movements</span>
                     </a>
                 </li>
                 @endcan
 
-                <!-- Purchasing Section -->
+
+                <!-- Purchasing -->
                 <li class="nav-section">
-                    <span class="sidebar-mini-icon"><i class="fas fa-shopping-cart"></i></span>
-                    <h4 class="text-section">Purchasing</h4>
+                    <h6 class="text-uppercase text-muted mt-3 mb-2">Purchasing</h6>
                 </li>
 
-                <!-- Purchases -->
                 @can('purchase_view')
                 <li class="nav-item">
-                    <a href="{{ route('purchases.index') }}">
+                    <a href="{{ route('purchases.index') }}" class="nav-link">
                         <i class="fas fa-file-invoice-dollar"></i>
-                        <p>Purchases</p>
+                        <span>Purchases</span>
                     </a>
                 </li>
                 @endcan
 
-                <!-- Purchase Items -->
                 @can('purchase_item_view')
                 <li class="nav-item">
-                    <a href="{{ route('purchase-items.index') }}">
+                    <a href="{{ route('purchase-items.index') }}" class="nav-link">
                         <i class="fas fa-list-ol"></i>
-                        <p>Purchase Items</p>
+                        <span>Purchase Items</span>
                     </a>
                 </li>
                 @endcan
 
-                <!-- Purchase Reports -->
                 @can('purchase_report_view')
                 <li class="nav-item">
-                    <a href="{{ route('purchases.items-report') }}">
+                    <a href="{{ route('purchases.items-report') }}" class="nav-link">
                         <i class="fas fa-chart-bar"></i>
-                        <p>Purchase Reports</p>
+                        <span>Purchase Reports</span>
                     </a>
                 </li>
                 @endcan
 
-                <!-- Batch Management -->
-                {{-- @can('purchase_batch_manage')
-                <li class="nav-item">
-                    <a href="{{ route('purchases.batch-report') }}">
-                        <i class="fas fa-boxes"></i>
-                        <p>Batch Management</p>
-                    </a>
-                </li>
-                @endcan --}}
-
-
-
-                <!-- Export Purchases -->
-                {{-- @can('purchase_export')
-                <li class="nav-item">
-                    <a href="{{ route('purchases.export') }}">
-                        <i class="fas fa-file-export"></i>
-                        <p>Export Purchases</p>
-                    </a>
-                </li>
-                @endcan --}}
-
-                <!-- Sales Section -->
-                <li class="nav-section">
-                    <span class="sidebar-mini-icon"><i class="fas fa-cash-register"></i></span>
-                    <h4 class="text-section">Sales</h4>
-                </li>
-
-                <!-- Customers -->
-                <li class="nav-item">
-                    <a href="{{ route('customers.index') }}">
-                        <i class="fas fa-user-friends"></i>
-                        <p>Customers</p>
-                    </a>
-                </li>
 
                 <!-- Sales -->
+                <li class="nav-section">
+                    <h6 class="text-uppercase text-muted mt-3 mb-2">Sales</h6>
+                </li>
+
+                <li class="nav-item">
+                    <a href="{{ route('customers.index') }}" class="nav-link">
+                        <i class="fas fa-user-friends"></i>
+                        <span>Customers</span>
+                    </a>
+                </li>
+
                 @can('sale_view')
                 <li class="nav-item">
-                    <a href="{{ route('sales.create') }}">
+                    <a href="{{ route('sales.create') }}" class="nav-link">
                         <i class="fas fa-receipt"></i>
-                        <p>Sales Transactions</p>
+                        <span>Sales Transactions</span>
                     </a>
                 </li>
                 @endcan
 
-                <!-- Sale Items -->
                 @can('sale_item_view')
                 <li class="nav-item">
-                    <a href="{{ route('sale-items.index') }}">
+                    <a href="{{ route('sale-items.index') }}" class="nav-link">
                         <i class="fas fa-list-ol"></i>
-                        <p>Sale Items</p>
+                        <span>Sale Items</span>
                     </a>
                 </li>
                 @endcan
 
 
-                <!-- Reports Section -->
+                <!-- Reports -->
                 <li class="nav-section">
-                    <span class="sidebar-mini-icon"><i class="fas fa-chart-bar"></i></span>
-                    <h4 class="text-section">Reports & Analytics</h4>
+                    <h6 class="text-uppercase text-muted mt-3 mb-2">Reports & Analytics</h6>
                 </li>
 
-                <!-- Reports Dashboard -->
                 <li class="nav-item">
-                    <a href="{{ route('reports.index') }}">
+                    <a href="{{ route('reports.index') }}" class="nav-link">
                         <i class="fas fa-chart-pie"></i>
-                        <p>Reports Dashboard</p>
+                        <span>Reports Dashboard</span>
                     </a>
                 </li>
 
-                <!-- Sales Reports -->
                 <li class="nav-item">
-                    <a href="{{ route('reports.sales') }}">
+                    <a href="{{ route('reports.sales') }}" class="nav-link">
                         <i class="fas fa-chart-line"></i>
-                        <p>Sales Reports</p>
+                        <span>Sales Reports</span>
                     </a>
                 </li>
 
-                <!-- Inventory Reports -->
                 <li class="nav-item">
-                    <a href="{{ route('reports.inventory') }}">
+                    <a href="{{ route('reports.inventory') }}" class="nav-link">
                         <i class="fas fa-box-open"></i>
-                        <p>Inventory Reports</p>
+                        <span>Inventory Reports</span>
                     </a>
                 </li>
 
-                <!-- Profit & Loss -->
                 <li class="nav-item">
-                    <a href="{{ route('reports.profit-loss') }}">
+                    <a href="{{ route('reports.profit-loss') }}" class="nav-link">
                         <i class="fas fa-dollar-sign"></i>
-                        <p>Profit & Loss</p>
+                        <span>Profit & Loss</span>
                     </a>
                 </li>
 
-                <!-- Expiry Reports -->
                 <li class="nav-item">
-                    <a href="{{ route('reports.expiry') }}">
+                    <a href="{{ route('reports.expiry') }}" class="nav-link">
                         <i class="fas fa-exclamation-triangle"></i>
-                        <p>Expiry Reports</p>
+                        <span>Expiry Reports</span>
                     </a>
                 </li>
 
-                <!-- Purchase Analytics -->
                 @can('purchase_report_view')
                 <li class="nav-item">
-                    <a href="{{ route('purchases.statistics') }}">
+                    <a href="{{ route('purchases.statistics') }}" class="nav-link">
                         <i class="fas fa-shopping-basket"></i>
-                        <p>Purchase Analytics</p>
+                        <span>Purchase Analytics</span>
                     </a>
                 </li>
                 @endcan
 
-                <!-- User Management Section -->
+
+                <!-- User Management -->
                 <li class="nav-section">
-                    <span class="sidebar-mini-icon"><i class="fas fa-users-cog"></i></span>
-                    <h4 class="text-section">User Management</h4>
+                    <h6 class="text-uppercase text-muted mt-3 mb-2">User Management</h6>
                 </li>
 
-                <!-- Users -->
                 @can('user_view')
                 <li class="nav-item">
-                    <a href="{{ route('users.index') }}">
+                    <a href="{{ route('users.index') }}" class="nav-link">
                         <i class="fas fa-users"></i>
-                        <p>Users</p>
+                        <span>Users</span>
                     </a>
                 </li>
                 @endcan
 
-                <!-- Roles & Permissions -->
                 @can('role_management')
                 <li class="nav-item">
-                    <a href="{{ route('roles.index') }}">
+                    <a href="{{ route('roles.index') }}" class="nav-link">
                         <i class="fas fa-user-shield"></i>
-                        <p>Roles & Permissions</p>
+                        <span>Roles & Permissions</span>
                     </a>
                 </li>
                 @endcan
 
-                <!-- Alerts Section -->
+
+                <!-- Alerts -->
                 <li class="nav-section">
-                    <span class="sidebar-mini-icon"><i class="fas fa-bell"></i></span>
-                    <h4 class="text-section">Alerts & Notifications</h4>
+                    <h6 class="text-uppercase text-muted mt-3 mb-2">Alerts & Notifications</h6>
                 </li>
 
-                <!-- Expiry Alerts -->
                 @can('purchase_batch_manage')
                 <li class="nav-item">
-                    <a href="{{ route('purchases.batch-report') }}?expiring_soon=1">
+                    <a href="{{ route('purchases.batch-report') }}?expiring_soon=1" class="nav-link">
                         <i class="fas fa-exclamation-triangle text-warning"></i>
-                        <p>Expiry Alerts</p>
+                        <span>Expiry Alerts</span>
                     </a>
                 </li>
                 @endcan
 
-                <!-- Reorder Notifications -->
                 <li class="nav-item">
-                    <a href="#">
+                    <a href="#" class="nav-link">
                         <i class="fas fa-sync-alt text-info"></i>
-                        <p>Reorder Notifications</p>
+                        <span>Reorder Notifications</span>
                     </a>
                 </li>
 
-                <!-- Payment Due Alerts -->
                 @can('purchase_payment_manage')
                 <li class="nav-item">
-                    <a href="{{ route('purchases.index') }}?payment_status=pending">
+                    <a href="{{ route('purchases.index') }}?payment_status=pending" class="nav-link">
                         <i class="fas fa-clock text-danger"></i>
-                        <p>Payment Due Alerts</p>
+                        <span>Payment Due Alerts</span>
                     </a>
                 </li>
                 @endcan
@@ -292,3 +246,93 @@
         </div>
     </div>
 </div>
+
+<!-- Modern Sidebar CSS -->
+<style>
+.modern-sidebar {
+    background: #111827;
+    width: 250px;
+    min-height: 100vh;
+    color: #e5e7eb;
+    transition: all 0.3s ease;
+    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.3);
+}
+
+.modern-sidebar .logo-header {
+    padding: 1rem 1.2rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    display: flex;
+    align-items: center;
+}
+
+.modern-sidebar .toggle-sidebar {
+    background: transparent;
+    border: none;
+    color: #9ca3af;
+    transition: color 0.3s ease;
+}
+
+.modern-sidebar .toggle-sidebar:hover {
+    color: #fff;
+}
+
+.modern-sidebar .nav-link {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 0.75rem 1.2rem;
+    color: #9ca3af;
+    font-weight: 500;
+    border-radius: 10px;
+    transition: all 0.3s ease;
+}
+
+.modern-sidebar .nav-link i {
+    font-size: 1.1rem;
+    width: 22px;
+    text-align: center;
+    color: #9ca3af;
+    transition: color 0.3s ease;
+}
+
+.modern-sidebar .nav-link:hover {
+    background: #1f2937;
+    color: #fff;
+}
+
+.modern-sidebar .nav-link:hover i {
+    color: #10b981;
+}
+
+.modern-sidebar .nav-item.active > .nav-link {
+    background: linear-gradient(90deg, #10b981, #059669);
+    color: #fff;
+}
+
+.modern-sidebar .nav-item.active i {
+    color: #fff;
+}
+
+.modern-sidebar .nav-section h6 {
+    font-size: 0.75rem;
+    letter-spacing: 1px;
+    color: #6b7280;
+    padding: 0.5rem 1.2rem;
+    margin-top: 1rem;
+    text-transform: uppercase;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.scrollbar {
+    overflow-y: auto;
+}
+
+.scrollbar::-webkit-scrollbar {
+    width: 6px;
+}
+
+.scrollbar::-webkit-scrollbar-thumb {
+    background: #374151;
+    border-radius: 10px;
+}
+</style>

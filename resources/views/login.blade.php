@@ -330,27 +330,27 @@
                 <div class="login-header">
                     <h2>Sign In</h2>
                     <p>Enter your credentials to access your account</p>
-                </div>
+                    </div>
 
-                @if($errors->any())
+                    @if($errors->any())
                     <div class="alert alert-danger alert-dismissible fade show" role="alert">
                         <i class="fas fa-exclamation-circle me-2"></i>
                         {{ $errors->first() }}
                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                    </div>
-                @endif
+                        </div>
+                    @endif
 
-                @if(session('status'))
+                    @if(session('status'))
                     <div class="alert alert-success alert-dismissible fade show" role="alert">
                         <i class="fas fa-check-circle me-2"></i>
                         {{ session('status') }}
                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                    </div>
-                @endif
+                        </div>
+                    @endif
 
                 <form method="POST" action="{{ route('login') }}">
-                    @csrf
-                    <input type="hidden" name="redirect_url" value="{{ request('redirect_url') }}">
+                        @csrf
+                        <input type="hidden" name="redirect_url" value="{{ request('redirect_url') }}">
 
                     <div class="form-group">
                         <label for="email" class="form-label">
@@ -358,26 +358,26 @@
                         </label>
                         <input type="email"
                                class="form-control @error('email') is-invalid @enderror"
-                               id="email"
-                               name="email"
+                                   id="email"
+                                   name="email"
                                placeholder="Enter your email"
                                value="{{ old('email') }}"
                                required
                                autofocus>
-                        @error('email')
+                            @error('email')
                             <div class="invalid-feedback d-block">{{ $message }}</div>
-                        @enderror
-                    </div>
+                            @enderror
+                        </div>
 
                     <div class="form-group">
                         <label for="password" class="form-label">
                             <i class="fas fa-lock me-2"></i>Password
                         </label>
                         <div class="input-group">
-                            <input type="password"
+                                <input type="password"
                                    class="form-control @error('password') is-invalid @enderror"
-                                   id="password"
-                                   name="password"
+                                       id="password"
+                                       name="password"
                                    placeholder="Enter your password"
                                    required>
                             <button type="button" class="password-toggle" id="togglePassword">
@@ -406,14 +406,14 @@
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
-    <!-- Password Toggle Script -->
-    <script>
+<!-- Password Toggle Script -->
+<script>
         document.addEventListener('DOMContentLoaded', function() {
             const togglePassword = document.getElementById('togglePassword');
             const passwordInput = document.getElementById('password');
             const eyeIcon = document.getElementById('eyeIcon');
 
-            if (togglePassword) {
+        if (togglePassword) {
                 togglePassword.addEventListener('click', function() {
                     const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
                     passwordInput.setAttribute('type', type);
@@ -421,13 +421,13 @@
                     if (type === 'password') {
                         eyeIcon.classList.remove('fa-eye-slash');
                         eyeIcon.classList.add('fa-eye');
-                    } else {
+                } else {
                         eyeIcon.classList.remove('fa-eye');
                         eyeIcon.classList.add('fa-eye-slash');
-                    }
-                });
-            }
-        });
-    </script>
+                }
+            });
+        }
+    });
+</script>
 </body>
 </html>
