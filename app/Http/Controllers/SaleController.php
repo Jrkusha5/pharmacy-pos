@@ -313,4 +313,42 @@ $items = Item::all();
         
         return view('sales.print', compact('sale'));
     }
+
+    /**
+     * Search items for sales (AJAX endpoint)
+     */
+    public function searchItems(Request $request)
+    {
+        $search = $request->get('search', '');
+        $limit = $request->get('limit', 20);
+        
+        $query = Item::with(['category', 'unit'])
+            ->where('active', true);
+        
+        if ($search) {
+            $query->where(function($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%")
+                  ->orWhere('sku', 'like', "%{$search}%")
+                  ->orWhere('barcode', 'like', "%{$search}%");
+            });
+        }
+        
+        $items = $query->orderBy('name')
+            ->limit($limit)
+            ->get()
+            ->map(function($item) {
+                return [
+                    'id' => $item->id,
+                    'name' => $item->name,
+                    'sku' => $item->sku,
+                    'barcode' => $item->barcode,
+                    'category' => $item->category->name ?? 'N/A',
+                    'unit' => $item->unit->name ?? 'N/A',
+                    'price' => $item->selling_price ?? $item->default_sell_price ?? 0,
+                    'stock' => $item->qty_on_hand ?? 0,
+                ];
+            });
+        
+        return response()->json($items);
+    }
 }

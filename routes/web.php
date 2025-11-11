@@ -68,6 +68,7 @@ Route::middleware('auth')->group(function () {
     // Sales
     Route::resource('sales', SaleController::class);
     Route::get('sales/{sale}/print', [SaleController::class, 'printInvoice'])->name('sales.print');
+    Route::get('sales/search-items', [SaleController::class, 'searchItems'])->name('sales.search-items');
 
     // Sale Items
     Route::resource('sale-items', SaleItemController::class);
