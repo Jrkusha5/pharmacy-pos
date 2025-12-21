@@ -3,7 +3,7 @@
     <div class="sidebar-logo">
         <div class="logo-header">
             <a href="{{ route('dashboard') }}" class="logo d-flex align-items-center">
-                <img src="{{ asset('assets/img/kaiadmin/logo_light.svg') }}" alt="Pharmacy" height="26" />
+                {{-- <img src="{{ asset('assets/img/kaiadmin/logo_light.svg') }}" alt="Pharmacy" height="26" /> --}}
                 <span class="ms-2 fw-semibold text-white">Pharmacy POS</span>
             </a>
             <button class="btn btn-sm btn-outline-light toggle-sidebar ms-auto">
